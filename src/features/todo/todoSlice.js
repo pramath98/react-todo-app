@@ -1,0 +1,23 @@
+import { createSlice,nanoid } from "@reduxjs/toolkit";
+const initialState = {
+    todos:[],
+};
+export const todoSlice = createSlice({
+    name:'todo',
+    initialState,
+    reducers:{
+        addTodo: (state,action)=>{
+            const todo = {
+                id: nanoid(),
+                text:action.payload,
+            }
+            state.todos.push(todo);
+        },
+        removeTodo: (state,action)=>{
+            state.todos=state.todos.filter((todo)=>todo.id !== action.payload)
+        }
+    }
+});
+
+export const {addTodo,removeTodo} = todoSlice.actions; // exporting the actual actions which we can perfrom
+export default todoSlice.reducer; //needs to be wired up with the store
