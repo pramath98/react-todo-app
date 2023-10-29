@@ -1,10 +1,64 @@
+@font-face {
+  font-family: 'Montserrat-Thin';
+  src: local('Montserrat-Thin'),
+    url('./fonts/Montserrat/Montserrat-Thin.ttf') format('ttf');
+}
+
+@font-face {
+  font-family: 'Montserrat-Bold';
+  src: local('Montserrat-Bold'),
+    url('./fonts/Montserrat/Montserrat-Bold.ttf') format('ttf');
+}
+
 body {
-  margin: 0;
+  /* margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  -moz-osx-font-smoothing: grayscale; */
+  height: 100%;
+  background: #1a1a1a;
+}
+
+.app-header {
+  color: white;
+  font-family: 'Montserrat-Thin';
+  font-size: 2rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.todo-ip {
+  background: #434343;
+  border: 2px solid gray;
+  border-radius: 10px;
+  height: 3rem;
+  width: 40rem;
+  margin: 20px;
+  color: white;
+}
+
+.todo-submitB {
+  background: #ea9700;
+  color: #1a1a1a;
+  border: none;
+  padding: 10px;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+.todo-heading{
+  color:white;
+  font-size: 2rem;
+  font-family: Montserrat-Bold;
+}
+
+.todos-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 code {

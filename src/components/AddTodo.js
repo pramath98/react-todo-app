@@ -15,10 +15,9 @@ function AddTodo(){
 
     return(
         <>
-        <div>AddTodo</div>
         <form onSubmit={addTodoHandler}>
-        <input type="text" value={input} onChange={(e)=>setInput(e.target.value)}/>
-        <button type="submit"> Add Todo </button>
+        <input className="todo-ip" type="text" value={input} placeholder="Add your next task..." onChange={(e)=>setInput(e.target.value)}/>
+        <button className="todo-submitB" type="submit"> Add </button>
         </form>
         </>
     );
