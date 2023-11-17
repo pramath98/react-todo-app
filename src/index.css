@@ -26,35 +26,77 @@ body {
   font-family: 'Montserrat-Thin';
   font-size: 2rem;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+}
+
+.submit-form-add-todo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .todo-ip {
-  background: #434343;
-  border: 2px solid gray;
+  background: #2f2f2f;
+  border: 0px solid gray;
   border-radius: 10px;
   height: 3rem;
   width: 40rem;
   margin: 20px;
   color: white;
+  font-family: Montserrat;
+  padding-left: 10px;
+}
+
+.signupIP {
+  background: #2f2f2f;
+  border: 0px solid gray;
+  border-radius: 10px;
+  height: 3rem;
+  width: 30rem;
+  margin: 20px;
+  margin-top: 10px;
+  color: white;
+  font-family: Montserrat;
+  padding-left: 10px;
+}
+
+.todo-ip:focus-visible {
+  outline: 0px solid gray !important;
+}
+
+.signupIP.signupIP-pwd{
+  -webkit-text-security: disc;
+}
+
+
+.signupIP:focus-visible {
+  outline: 0px solid gray !important;
 }
 
 .todo-submitB {
-  background: #ea9700;
+  background: #ff5c00;
   color: #1a1a1a;
   border: none;
   padding: 10px;
-  border-radius: 15px;
+  border-radius: 30px;
   cursor: pointer;
+  font-size: 26px;
+  font-weight: 500;
+  width: 50px;
+  height: 50px;
 }
 
-.todo-heading{
-  color:white;
+.todo-heading {
+  color: white;
   font-size: 2rem;
   font-family: Montserrat-Bold;
 }
 
-.todos-container{
+.todo-text{
+  font-family: 'Montserrat';
+}
+
+.todos-container {
   display: flex;
   justify-content: center;
   align-items: center;

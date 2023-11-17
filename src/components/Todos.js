@@ -13,7 +13,6 @@ function Todos() {
     console.log(todos);
     const dispatch = useDispatch();
     const [editDialog, setEditDialog] = useState(false);
-    const [input, setInput] = useState('');
     const [editId, setEditId] = useState('');
     const [editText, setEditText] = useState('');
 
@@ -44,21 +43,16 @@ function Todos() {
             </Dialog>
             <div className='todos-container'>
                 {todos.map(todo => (
-
                     <Card key={todo.id} style={{ width: '25%', margin: '10px' }}
                     >
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <span>{todo.text}</span>
+                            <span className='todo-text'>{todo.text}</span>
                             <div>
                                 <Button icon="pi pi-file-edit" onClick={(e) => editHandler(e, todo.id, todo.text)} rounded text severity="warn" aria-label="Edit" />
-                                <Button onClick={() => dispatch(removeTodo(todo.id))} icon="pi pi-times" rounded text severity="danger" aria-label="Cancel" />
+                                <Button onClick={() => dispatch(removeTodo(todo.id))} icon="pi pi-file-excel" rounded text severity="danger" aria-label="Cancel" />
                             </div>
                         </div>
                     </Card>
-                    //  <div className='todo-item'>
-                    //     <li onClick={() => dispatch(updateTodo({ id: todo.id, text: 'pramath' }))} key={todo.id}>{todo.text}</li> 
-                    //      <div onClick={() => dispatch(removeTodo(todo.id))}>X</div> 
-                    //  </div>
                 ))}
             </div>
         </>

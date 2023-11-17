@@ -1,0 +1,47 @@
+.letsStart {
+    color: white;
+    font-family: Montserrat-Bold;
+    font-size: 3rem;
+    background: #ff5c00;
+    width: max-content;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 50px;
+}
+
+.welcome {
+    color: white;
+    font-family: Montserrat-Thin;
+    font-size: 7rem;
+}
+
+.welcomeContainer {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.signupContainer {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    background: #424242;
+    border-radius: 2rem;
+    margin: 40px;
+}
+
+.ipRow {
+    display: flex;
+    color: white;
+    font-family: 'Montserrat';
+    flex-direction: column;
+    align-items: center;
+}
+
+.ipRow:focus-visible {
+    outline: 0px solid gray !important;
+  }
