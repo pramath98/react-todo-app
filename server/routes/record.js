@@ -1,4 +1,5 @@
 const express = require("express");
+const bcrypt = require('bcrypt');
 
 // recordRoutes is an instance of the express router.
 // We use it to define our routes.
@@ -10,7 +11,6 @@ const dbo = require("../db/conn");
 
 // This help convert the id from string to ObjectId for the _id.
 const ObjectId = require("mongodb").ObjectId;
-
 
 // This section will help you get a list of all the records.
 recordRoutes.route("/users").get(async function (req, res) {
@@ -29,21 +29,35 @@ recordRoutes.route("/users").get(async function (req, res) {
 });
 
 // This section will help you get a single record by id
-recordRoutes.route("/record/:id").get(function (req, res) {
-  let db_connect = dbo.getDb();
-  console.log(req.params.id);
-  let myquery = { _id: req.params.id };
-  db_connect
-    .collection("listingsAndReviews")
-    .findOne(myquery).then(result => res.status(200).json(result));
+recordRoutes.route("/login").post(async (req, res) => {
+  try {
+    let db_connect = await dbo.getDb();
+    let myquery = { userName: req.body.userName };
+    let records = await db_connect
+      .collection("users")
+      .findOne(myquery);
+    let results = await bcrypt.compare(req.body.password, records.password)
+    if (results)
+      res.status(200).json(records);
+    else
+      throw ('e')
+  } catch (e) {
+    console.log('error while logging in', e);
+  }
+
 });
 
 // This section will help you create a new record.
-recordRoutes.route("/users/add").post(async (req, response)=> {
-  try{
-    let db_connect = dbo.getDb();
+recordRoutes.route("/users/add").post(async (req, response) => {
+  try {
+    // const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    let db_connect = await dbo.getDb();
     let myobj = {
-      name: req.body.name,
+      firstName: req.body.firstName,
+      userName: req.body.userName,
+      email: req.body.email,
+      password: hashedPassword
     };
     const res = await db_connect.collection('users').insertOne(myobj);
     response.json(res);
@@ -51,11 +65,11 @@ recordRoutes.route("/users/add").post(async (req, response)=> {
     //    if (err) throw err;
     //    response.json(res);
     //  });
-  }catch(e){
+  } catch (e) {
     console.log(e);
     response.json(e.message);
   }
-  
+
 });
 
 // This section will help you update a record by id.
@@ -64,13 +78,14 @@ recordRoutes.route("/update/:id").post(function (req, response) {
   let myquery = { _id: ObjectId(req.params.id) };
   let newvalues = {
     $set: {
-      name: req.body.name,
-      position: req.body.position,
-      level: req.body.level,
+      firstName: req.body.firstName,
+      userName: req.body.userName,
+      email: req.body.email,
+      password: hashedPassword
     },
   };
   db_connect
-    .collection("records")
+    .collection("users")
     .updateOne(myquery, newvalues, function (err, res) {
       if (err) throw err;
       console.log("1 document updated");
