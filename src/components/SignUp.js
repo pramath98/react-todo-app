@@ -5,29 +5,30 @@ import styles from './Welcome.module.css';
 import { Button } from "primereact/button";
 import CryptoJS from 'crypto-js';
 
-function Login() {
-    // const SECRET_KEY = process.env.REACT_APP_SECRET_KEY; 
-
-    document.title = 'Login';
+function SignUp() {
+    const [fname, setFname] = useState('');
+    const [email, setEmail] = useState('');
     const [uname, setUname] = useState('');
     const [pwd, setPwd] = useState('');
     const onFormSubmit = async (e) => {
         e.preventDefault();
         console.log('form submitted');
-        if (uname === '' || pwd === '') {
+        if (fname === '' || email === '' || uname === '' || pwd === '') {
             alert('Please fill mandatory fields!');
         } else {
-            console.log(pwd, uname);
+            console.log(pwd, uname, email, fname);
         }
-        const login = {
+        const data = {
             userName: uname,
-            password: pwd
+            password: pwd,
+            email: email,
+            firstName: fname
         }
         const encryptedObject = CryptoJS.AES.encrypt(
-            JSON.stringify(login),
+            JSON.stringify(data),
             process.env.REACT_APP_SECRET_KEY
           ).toString();
-        fetch('http://localhost:5000/login', {
+        const response = await fetch('http://localhost:5000/users/add', {
             method: "POST", // *GET, POST, PUT, DELETE, etc.
             mode: "cors", // no-cors, *cors, same-origin
             cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -39,19 +40,22 @@ function Login() {
             redirect: "follow", // manual, *follow, error
             referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
             body: JSON.stringify({encryptedObject}), // body data type must match "Content-Type" header
-        }).then(res => {
-            if (res.status === 200)
-                window.location.replace("/");
         });
+        console.log(response.json());
     }
 
     return (
-        <div className="App">
-            <div className={styles.welcomeContainer}>
-                <span className={styles.welcome}>Welcome</span>
-                {/* <span className={styles.letsStart}>Let's create your account!</span> */}
-            </div>
+        <>
+            <span className={styles.letsStart}>Let's create your account!</span>
             <form className={styles.signupContainer} onSubmit={onFormSubmit}>
+                <div className={styles.ipRow}>
+                    <span>First Name</span>
+                    <input className={'signupIP'} value={fname} onChange={(e) => setFname(e.target.value)}></input>
+                </div>
+                <div className={styles.ipRow}>
+                    <span>Email</span>
+                    <input className={'signupIP'} value={email} onChange={(e) => setEmail(e.target.value)}></input>
+                </div>
                 <div className={styles.ipRow}>
                     <span>User Name</span>
                     <input className={'signupIP'} value={uname} onChange={(e) => setUname(e.target.value)}></input>
@@ -64,8 +68,8 @@ function Login() {
                     Submit
                 </Button>
             </form>
-        </div>
-    );
-}
+        </>
+    )
 
-export default Login;
+}
+export default SignUp;

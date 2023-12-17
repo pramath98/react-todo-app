@@ -1,5 +1,6 @@
 const express = require("express");
 const bcrypt = require('bcrypt');
+const CryptoJS = require('crypto-js');
 
 // recordRoutes is an instance of the express router.
 // We use it to define our routes.
@@ -32,15 +33,21 @@ recordRoutes.route("/users").get(async function (req, res) {
 recordRoutes.route("/login").post(async (req, res) => {
   try {
     let db_connect = await dbo.getDb();
-    let myquery = { userName: req.body.userName };
+
+    const encryptedData = req.body.encryptedObject;
+    const decryptedObject = JSON.parse(
+      CryptoJS.AES.decrypt(encryptedData, process.env.SECRET_KEY).toString(CryptoJS.enc.Utf8)
+    );
+    let myquery = { userName: decryptedObject.userName };
     let records = await db_connect
       .collection("users")
       .findOne(myquery);
-    let results = await bcrypt.compare(req.body.password, records.password)
+    let results = await bcrypt.compare(decryptedObject.password, records.password)
     if (results)
       res.status(200).json(records);
     else
       throw ('e')
+
   } catch (e) {
     console.log('error while logging in', e);
   }
@@ -51,12 +58,16 @@ recordRoutes.route("/login").post(async (req, res) => {
 recordRoutes.route("/users/add").post(async (req, response) => {
   try {
     // const salt = await bcrypt.genSalt();
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const encryptedData = req.body.encryptedObject;
+    const decryptedObject = JSON.parse(
+      CryptoJS.AES.decrypt(encryptedData, process.env.SECRET_KEY).toString(CryptoJS.enc.Utf8)
+    );
+    const hashedPassword = await bcrypt.hash(decryptedObject.password, 10);
     let db_connect = await dbo.getDb();
     let myobj = {
-      firstName: req.body.firstName,
-      userName: req.body.userName,
-      email: req.body.email,
+      firstName: decryptedObject.firstName,
+      userName: decryptedObject.userName,
+      email: decryptedObject.email,
       password: hashedPassword
     };
     const res = await db_connect.collection('users').insertOne(myobj);
