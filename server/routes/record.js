@@ -1,6 +1,7 @@
 const express = require("express");
 const bcrypt = require('bcrypt');
 const CryptoJS = require('crypto-js');
+const { createTokens } = require("../JWT");
 
 // recordRoutes is an instance of the express router.
 // We use it to define our routes.
@@ -34,17 +35,24 @@ recordRoutes.route("/login").post(async (req, res) => {
   try {
     let db_connect = await dbo.getDb();
 
-    const encryptedData = req.body.encryptedObject;
-    const decryptedObject = JSON.parse(
-      CryptoJS.AES.decrypt(encryptedData, process.env.SECRET_KEY).toString(CryptoJS.enc.Utf8)
-    );
+    // const encryptedData = req.body.encryptedObject;
+    // const decryptedObject = JSON.parse(
+    //   CryptoJS.AES.decrypt(encryptedData, process.env.SECRET_KEY).toString(CryptoJS.enc.Utf8)
+    // );
+    const decryptedObject = req.body; //when testing with Postman
     let myquery = { userName: decryptedObject.userName };
     let records = await db_connect
       .collection("users")
       .findOne(myquery);
     let results = await bcrypt.compare(decryptedObject.password, records.password)
-    if (results)
+    if (results) {
+      const accessToken = createTokens(records);
+      let age = new Date().setDate(15);
+      res.cookie('access-token', accessToken, {
+        maxAge: age
+      });
       res.status(200).json(records);
+    }
     else
       throw ('e')
 
