@@ -1,12 +1,14 @@
 const express = require("express");
 const bcrypt = require('bcrypt');
 const CryptoJS = require('crypto-js');
-const { createTokens } = require("../JWT");
+const { createTokens, validateToken } = require("../JWT");
+const cookieParser = require('cookie-parser');
 
 // recordRoutes is an instance of the express router.
 // We use it to define our routes.
 // The router will be added as a middleware and will take control of requests starting with path /record.
 const recordRoutes = express.Router();
+recordRoutes.use(cookieParser());
 
 // This will help us connect to the database
 const dbo = require("../db/conn");
@@ -28,6 +30,14 @@ recordRoutes.route("/users").get(async function (req, res) {
   } catch (e) {
     console.log('error while viewing records:', e);
   }
+});
+
+recordRoutes.route('/profile').get(validateToken,async (req, res) =>
+{ 
+  if(req.authenticated) 
+  res.json(req.user);
+  else
+  res.status(405).json('your JWT is malformed');
 });
 
 // This section will help you get a single record by id
