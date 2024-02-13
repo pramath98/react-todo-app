@@ -32,12 +32,11 @@ recordRoutes.route("/users").get(async function (req, res) {
   }
 });
 
-recordRoutes.route('/profile').get(validateToken,async (req, res) =>
-{ 
-  if(req.authenticated) 
-  res.json(req.user);
+recordRoutes.route('/profile').get(validateToken, async (req, res) => {
+  if (req.authenticated)
+    res.status(200).json(req.user);
   else
-  res.status(405).json('your JWT is malformed');
+    res.status(405).json('your JWT is malformed');
 });
 
 // This section will help you get a single record by id
@@ -45,11 +44,9 @@ recordRoutes.route("/login").post(async (req, res) => {
   try {
     let db_connect = await dbo.getDb();
 
-    // const encryptedData = req.body.encryptedObject;
-    // const decryptedObject = JSON.parse(
-    //   CryptoJS.AES.decrypt(encryptedData, process.env.SECRET_KEY).toString(CryptoJS.enc.Utf8)
-    // );
-    const decryptedObject = req.body; //when testing with Postman
+    const encryptedData = req.body.encryptedObject;
+    const decryptedObject = JSON.parse(CryptoJS.AES.decrypt(encryptedData, process.env.SECRET_KEY).toString(CryptoJS.enc.Utf8));
+    // const decryptedObject = req.body; //when testing with Postman
     let myquery = { userName: decryptedObject.userName };
     let records = await db_connect
       .collection("users")
@@ -59,15 +56,19 @@ recordRoutes.route("/login").post(async (req, res) => {
       const accessToken = createTokens(records);
       let age = new Date().setDate(15);
       res.cookie('access-token', accessToken, {
-        maxAge: age
+        domain: 'localhost',
+        path: '/',
+        maxAge: age,
+        httpOnly: true
       });
+      console.log(res);
       res.status(200).json(records);
     }
     else
       throw ('e')
 
   } catch (e) {
-    console.log('error while logging in', e);
+    res.status(401).json({error:e,message:'user not logged in!'});
   }
 
 });

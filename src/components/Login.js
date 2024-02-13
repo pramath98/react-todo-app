@@ -4,10 +4,11 @@ import 'primeicons/primeicons.css';
 import styles from './Welcome.module.css';
 import { Button } from "primereact/button";
 import CryptoJS from 'crypto-js';
+import { useNavigate } from "react-router-dom";
 
 function Login() {
     // const SECRET_KEY = process.env.REACT_APP_SECRET_KEY; 
-
+const navigate = useNavigate();
     document.title = 'Login';
     const [uname, setUname] = useState('');
     const [pwd, setPwd] = useState('');
@@ -26,22 +27,23 @@ function Login() {
         const encryptedObject = CryptoJS.AES.encrypt(
             JSON.stringify(login),
             process.env.REACT_APP_SECRET_KEY
-          ).toString();
+        ).toString();
         fetch('http://localhost:5000/login', {
             method: "POST", // *GET, POST, PUT, DELETE, etc.
             mode: "cors", // no-cors, *cors, same-origin
             cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: "same-origin", // include, *same-origin, omit
+            credentials: "include", // include, *same-origin, omit
             headers: {
                 "Content-Type": "application/json",
                 // 'Content-Type': 'application/x-www-form-urlencoded',
             },
             redirect: "follow", // manual, *follow, error
             referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-            body: JSON.stringify({encryptedObject}), // body data type must match "Content-Type" header
+            body: JSON.stringify({ encryptedObject }), // body data type must match "Content-Type" header
         }).then(res => {
             if (res.status === 200)
-                window.location.replace("/");
+                // window.location.replace("/");
+            navigate('/home');
         });
     }
 

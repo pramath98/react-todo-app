@@ -8,7 +8,7 @@ import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 
 function Todos() {
-    const todos = useSelector(state => state.todos);
+    const todos = useSelector(reducer => reducer.todos.todos);
     console.log(todos);
     const dispatch = useDispatch();
     const [editDialog, setEditDialog] = useState(false);
