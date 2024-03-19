@@ -61,7 +61,6 @@ recordRoutes.route("/login").post(async (req, res) => {
         maxAge: age,
         httpOnly: true
       });
-      console.log(res);
       res.status(200).json(records);
     }
     else

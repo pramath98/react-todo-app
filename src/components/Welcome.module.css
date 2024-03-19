@@ -44,4 +44,8 @@
 
 .ipRow:focus-visible {
     outline: 0px solid gray !important;
-  }
+}
+
+.mandatoryFieldIcon {
+    color: red;
+}
