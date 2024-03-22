@@ -1,10 +1,11 @@
 import React, { useState, useRef } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addTodo } from "../features/todo/todoSlice";
 
 
 function AddTodo() {
     const [input, setInput] = useState('');
+    const userInfo = useSelector(reducer => reducer.user);
     const dispatch = useDispatch();
     const ipRef = useRef(0);
 
@@ -12,6 +13,16 @@ function AddTodo() {
         e.preventDefault();
         if (input && input !== '') {
             dispatch(addTodo(input));
+            fetch(`http://localhost:5000/users/${userInfo.userID}/todo`,
+            { method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+             body: JSON.stringify({ "todoItem": input })
+            }).then(res => {
+                if (res.status === 500)
+                    console.log('saved!');
+            });
             setInput('');
         } else {
             ipRef.current.style.border = '2px solid red';

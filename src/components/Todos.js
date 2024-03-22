@@ -8,7 +8,7 @@ import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 
 function Todos() {
-    const todos = useSelector(state => state.todos);
+    const todos = useSelector(reducer => reducer.todos.todos);
     console.log(todos);
     const dispatch = useDispatch();
     const [editDialog, setEditDialog] = useState(false);
@@ -24,6 +24,7 @@ function Todos() {
 
     const updateHandler = () => {
         dispatch(updateTodo({ id: editId, text: editText }));
+        
         setEditId('');
         setEditText('');
         setEditDialog(false);
@@ -32,8 +33,10 @@ function Todos() {
     return (
         <>
             <Dialog visible={editDialog} onHide={() => setEditDialog(false)}>
+                <div className='todo-edit-container'>
                     <input className="todo-ip" type="text" value={editText} placeholder="Edit your next task..." onChange={(e) => setEditText(e.target.value)} />
-                    <button className="todo-submitB" onClick={updateHandler}> Update </button>
+                    <button className="todo-submitB" onClick={updateHandler}> <i class="pi pi-check" style={{ fontSize: "1rem" }}></i> </button>
+                </div>
             </Dialog>
             <div className='todos-container'>
                 {todos.map(todo => (
