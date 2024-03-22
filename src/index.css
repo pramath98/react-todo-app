@@ -116,3 +116,8 @@ code {
   width: 10%;
   margin: auto;
 }
+
+.todo-edit-container{
+  display: flex;
+  align-items: center;
+}
