@@ -7,6 +7,7 @@ function Welcome() {
 
     document.title = 'Welcome';
 
+
     return (
         <div className="App">
             <div className={styles.welcomeContainer}>
@@ -16,5 +17,5 @@ function Welcome() {
         </div>
     );
 }
-
 export default Welcome;
+

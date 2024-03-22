@@ -49,6 +49,7 @@ function Home() {
 
     return (
         userInfo.isLoggedIn &&
+
         <div className="App">
             <div className='app-header'>
                 <div>
@@ -63,7 +64,6 @@ function Home() {
             <AddTodo />
             <Todos />
         </div>
-
     );
 }
 

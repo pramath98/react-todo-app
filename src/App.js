@@ -7,6 +7,7 @@ import Welcome from './components/Welcome';
 import Login from './components/Login';
 import LandingPage from './landingPage';
 
+
 function App() {
   return (
     <BrowserRouter>
@@ -15,6 +16,7 @@ function App() {
         <Route path='/home' element={<Home/>}/>
         <Route path='/signup' element={<Welcome/>}/>
         <Route path='/login' element={<Login/>}/>
+
         </Routes>
       </BrowserRouter>
   );
