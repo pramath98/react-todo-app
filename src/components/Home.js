@@ -12,7 +12,6 @@ function Home() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const userInfo = useSelector(reducer => reducer.user);
-    console.log(userInfo);
     useEffect(() => {
         fetch('http://localhost:5000/profile',
             {

@@ -13,7 +13,7 @@ function AddTodo() {
         e.preventDefault();
         if (input && input !== '') {
             dispatch(addTodo(input));
-            fetch(`http://localhost:5000/users/${userInfo.userID}/todo`,
+            fetch(`http://localhost:5000/users/${userInfo.userID}/addTodos`,
             { method: 'POST',
             headers: {
                 "Content-Type": "application/json",

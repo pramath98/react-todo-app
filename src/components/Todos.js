@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux/es/hooks/useSelector';
 import { useDispatch } from "react-redux";
-import { removeTodo } from "../features/todo/todoSlice";
-import { updateTodo } from "../features/todo/todoSlice";
+import { fetchTodos, removeTodo,updateTodo } from "../features/todo/todoSlice";
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
@@ -24,11 +23,15 @@ function Todos() {
 
     const updateHandler = () => {
         dispatch(updateTodo({ id: editId, text: editText }));
-        
         setEditId('');
         setEditText('');
         setEditDialog(false);
     }
+
+    useEffect(()=>{
+        const datas=dispatch(fetchTodos());
+        console.log(datas);
+    },[dispatch]);
 
     return (
         <>

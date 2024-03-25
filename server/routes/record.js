@@ -101,19 +101,37 @@ recordRoutes.route("/users/add").post(async (req, response) => {
 
 });
 
-recordRoutes.route("/users/:id/todo").post(async(req,response)=>{
+recordRoutes.route("/users/:id/addTodos").post(async(req,response)=>{
   let db_connect = dbo.getDb();
   const userId=req.params.id;
   const todoItem=req.body.todoItem;
   try{
 
       let myquery = { _id: new ObjectId(userId) };
-      let record = db_connect.collection("users").findOne(myquery);
+      let record = await db_connect.collection("users").findOne(myquery);
       if(!record) return response.status(404).json({message:"Error! User not found."});
+      console.log('already present todos:',record);
       if(!record.todoItems) record.todoItems=[];
       record.todoItems.push(todoItem);
       await db_connect.collection("users").updateOne(myquery,{$set:{todoItems:record.todoItems}});
       response.status(500).json({message:'todo item saved successfully!'}); 
+    
+  }catch(e){
+    console.log(e);
+  }
+});
+
+recordRoutes.route("/users/:id/fetchTodos").get(async(req,response)=>{
+  let db_connect = dbo.getDb();
+  const userId=req.params.id;
+  try{
+
+      let myquery = { _id: new ObjectId(userId) };
+      let record = await db_connect.collection("users").findOne(myquery);
+      if(!record) return response.status(404).json({message:"Error! User not found."});
+      if(!record.todoItems) return response.status(404).json({message:'No todos found'});
+      console.log('records for todos: ',record.todoItems);
+      response.status(200).json({todos:record.todoItems}); 
     
   }catch(e){
     console.log(e);
