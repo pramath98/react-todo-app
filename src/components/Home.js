@@ -1,5 +1,4 @@
 import './Home.css';
-import "primereact/resources/themes/lara-light-indigo/theme.css";
 import 'primeicons/primeicons.css';
 import Todos from './Todos';
 import AddTodo from './AddTodo';

@@ -1,5 +1,6 @@
 import './App.css';
-import "primereact/resources/themes/lara-light-indigo/theme.css";
+import "primereact/resources/themes/arya-orange/theme.css";
+// import "primereact/resources/themes/lara-dark-indigo/theme.css";
 import 'primeicons/primeicons.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './components/Home';

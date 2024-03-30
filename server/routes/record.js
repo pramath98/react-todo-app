@@ -67,7 +67,7 @@ recordRoutes.route("/login").post(async (req, res) => {
       throw ('e')
 
   } catch (e) {
-    res.status(401).json({error:e,message:'user not logged in!'});
+    res.status(401).json({ error: e, message: 'user not logged in!' });
   }
 
 });
@@ -95,48 +95,81 @@ recordRoutes.route("/users/add").post(async (req, response) => {
     //    response.json(res);
     //  });
   } catch (e) {
-    console.log(e);
+    console.log('error while adding users', e);
     response.json(e.message);
   }
 
 });
 
-recordRoutes.route("/users/:id/addTodos").post(async(req,response)=>{
+recordRoutes.route("/users/:id/addTodos").post(async (req, response) => {
   let db_connect = dbo.getDb();
-  const userId=req.params.id;
-  const todoItem=req.body.todoItem;
-  try{
+  const userId = req.params.id;
+  const todoItem = req.body.todoItem;
+  try {
 
-      let myquery = { _id: new ObjectId(userId) };
-      let record = await db_connect.collection("users").findOne(myquery);
-      if(!record) return response.status(404).json({message:"Error! User not found."});
-      console.log('already present todos:',record);
-      if(!record.todoItems) record.todoItems=[];
-      record.todoItems.push(todoItem);
-      await db_connect.collection("users").updateOne(myquery,{$set:{todoItems:record.todoItems}});
-      response.status(500).json({message:'todo item saved successfully!'}); 
-    
-  }catch(e){
+    let myquery = { _id: new ObjectId(userId) };
+    let record = await db_connect.collection("users").findOne(myquery);
+    if (!record) return response.status(404).json({ message: "Error! User not found." });
+    if (!record.todoItems) record.todoItems = [];
+    record.todoItems.push(todoItem);
+    await db_connect.collection("users").updateOne(myquery, { $set: { todoItems: record.todoItems } });
+    response.status(200).json({ message: 'todo item saved successfully!' });
+
+  } catch (e) {
+    console.log('error while adding todos', e);
+  }
+});
+
+recordRoutes.route("/users/:id/fetchTodos").get(async (req, response) => {
+  let db_connect = dbo.getDb();
+  const userId = req.params.id;
+  try {
+    let myquery = { _id: new ObjectId(userId) };
+    let record = await db_connect.collection("users").findOne(myquery);
+    if (!record) return response.status(404).json({ message: "Error! User not found." });
+    if (!record.todoItems) return response.status(401).json({ message: 'No todos found' });
+    response.status(200).json({ todos: record.todoItems });
+
+  } catch (e) {
     console.log(e);
   }
 });
 
-recordRoutes.route("/users/:id/fetchTodos").get(async(req,response)=>{
+recordRoutes.route("/users/:id/updateTodos").post(async (req, response) => {
   let db_connect = dbo.getDb();
-  const userId=req.params.id;
-  try{
-
-      let myquery = { _id: new ObjectId(userId) };
-      let record = await db_connect.collection("users").findOne(myquery);
-      if(!record) return response.status(404).json({message:"Error! User not found."});
-      if(!record.todoItems) return response.status(404).json({message:'No todos found'});
-      console.log('records for todos: ',record.todoItems);
-      response.status(200).json({todos:record.todoItems}); 
-    
-  }catch(e){
-    console.log(e);
+  let myquery = { _id: new ObjectId(req.params.id) };
+  let newvalues = {
+    $set: {
+      todoItems: req.body.todoItems
+    },
+  };
+  try {
+    const record = await db_connect.collection("users").updateOne(myquery, newvalues);
+    if(!record) return response.status(500).json({ message: "Error! todos cannot be updated at this time" });
+    response.status(200).json({ message: 'todo item updated successfully!' });
+  } catch (e) {
+    response.status(501).json({ msg: 'error while updating the record, ', e });
   }
-})
+
+});
+
+recordRoutes.route("/users/:id/deleteTodos").post(async (req, response) => {
+  let db_connect = dbo.getDb();
+  let myquery = { _id: new ObjectId(req.params.id) };
+  let newvalues = {
+    $set: {
+      todoItems: req.body.todoItems
+    },
+  };
+  try {
+    const record = await db_connect.collection("users").updateOne(myquery, newvalues);
+    if(!record) return response.status(500).json({ message: "Error! todos cannot be deleted at this time" });
+    response.status(200).json({ message: 'todo item deleted successfully!' });
+  } catch (e) {
+    response.status(501).json({ msg: 'error while deleting the record, ', e });
+  }
+
+});
 
 // This section will help you update a record by id.
 recordRoutes.route("/update/:id").post(function (req, response) {

@@ -26,7 +26,9 @@ body {
   font-family: 'Montserrat-Thin';
   font-size: 2rem;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
+  width: 100%;
+  padding: 0px 10px 0px 10px;
 }
 
 .submit-form-add-todo {
@@ -64,7 +66,7 @@ body {
   outline: 0px solid gray !important;
 }
 
-.signupIP.signupIP-pwd{
+.signupIP.signupIP-pwd {
   -webkit-text-security: disc;
 }
 
@@ -92,7 +94,7 @@ body {
   font-family: Montserrat-Bold;
 }
 
-.todo-text{
+.todo-text {
   font-family: 'Montserrat';
 }
 
@@ -117,7 +119,7 @@ code {
   margin: auto;
 }
 
-.todo-edit-container{
+.todo-edit-container {
   display: flex;
   align-items: center;
 }

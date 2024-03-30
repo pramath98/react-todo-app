@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "primereact/resources/themes/lara-light-indigo/theme.css";
 import 'primeicons/primeicons.css';
 import styles from './Welcome.module.css';
 import { Button } from "primereact/button";
