@@ -54,7 +54,8 @@ recordRoutes.route("/login").post(async (req, res) => {
     let results = await bcrypt.compare(decryptedObject.password, records.password)
     if (results) {
       const accessToken = createTokens(records);
-      let age = new Date().setDate(15);
+      const milisecondsInADay=24*60*60*1000;
+      let age = milisecondsInADay*15; //we have to set age for 15 days thats why
       res.cookie('access-token', accessToken, {
         domain: 'localhost',
         path: '/',
@@ -70,6 +71,24 @@ recordRoutes.route("/login").post(async (req, res) => {
     res.status(401).json({ error: e, message: 'user not logged in!' });
   }
 
+});
+
+recordRoutes.route("/logout").post(async(req,res)=>{
+  try {
+    // Clear the access token cookie
+    res.clearCookie('access-token', {
+      domain: 'localhost',
+      path: '/',
+      httpOnly:true
+    });
+    console.log("cookie cleared successfully!");
+    // Send a response indicating successful logout
+    res.status(200).json({ message: 'Logout successful' });
+  } catch (error) {
+    // Handle any errors that occur during logout
+    console.error('error while deleting cookie: ',error);
+    res.status(500).json({ error: error.message });
+  }
 });
 
 // This section will help you create a new record.
