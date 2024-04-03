@@ -1,36 +1,162 @@
-import { createSlice,nanoid } from "@reduxjs/toolkit";
+import { createSlice, nanoid, createAsyncThunk } from "@reduxjs/toolkit";
 const initialState = {
-    todos:[],
+    todos: [],
+    loading: true,
+    error: false,
 };
-export const todoSlice = createSlice({
-    name:'todo',
-    initialState,
-    reducers:{
-        addTodo: (state,action)=>{
-            const todo = {
-                id: nanoid(),
-                text:action.payload,
-            }
-            state.todos.push(todo);
-        },
-        removeTodo: (state,action)=>{
-            state.todos=state.todos.filter((todo)=>todo.id !== action.payload)
-        },
-        updateTodo: (state,action)=>{
-            const {id,text}=action.payload;
-            let localID=id;
-            let updatedtext=text;
-            let idx=null;
-            let localState=[...state.todos];
-            localState.map((todo,ix)=>{
-                if(localID===todo.id)
-                    idx=ix;
-            });
-            localState[idx].text=updatedtext;
-            state.todos=localState;
-        }
+
+export const fetchTodos = createAsyncThunk('todos/fetchTodos', async (_, { getState }) => {
+    const userID = getState().user.userID;
+    const response = await fetch(`http://localhost:5000/users/${userID}/fetchTodos`,
+        {
+            method: 'GET',
+            credentials: 'include'
+        });
+    if (response.status === 200) {
+        let todos = await response.json();
+        let finalTodos = [];
+        todos.todos.forEach(todo => {
+            finalTodos.push(todo)
+        });
+        return finalTodos;
+    } else if (response.status === 401) {
+        throw response;
     }
 });
 
-export const {addTodo,removeTodo,updateTodo} = todoSlice.actions; // exporting the actual actions which we can perfrom
+const saveTodos = async (todo, userID) => {
+    return await fetch(`http://localhost:5000/users/${userID}/addTodos`,
+        {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 'todoItem': todo })
+        });
+};
+
+export const addTodos = createAsyncThunk('todos/addTodos', async (text, { getState }) => {
+    const todo = {
+        id: nanoid(),
+        text
+    }
+    const userID = getState().user.userID;
+    try {
+        await saveTodos(todo, userID);
+        return todo;
+    } catch (e) {
+        console.log('error while adding todo in the server', e);
+    }
+});
+
+const updateTodosAsync = async (todos, userID) => {
+    return await fetch(`http://localhost:5000/users/${userID}/updateTodos`,
+        {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 'todoItems': todos })
+        });
+}
+
+export const updateTodos = createAsyncThunk("todos/updateTodos", async ({ id, text }, { getState }) => {
+
+    let reduxTodos = getState().todos.todos;
+    let localState = reduxTodos.map(todo => ({ ...todo }));
+    const userID = getState().user.userID;
+    // localState[idx].text = text;
+    try {
+        localState.forEach((todo) => {
+            if (todo.id === id)
+                todo.text = text;
+        });
+        await updateTodosAsync(localState, userID);
+        return localState;
+    } catch (e) {
+        console.log("error while updating todo in the server", e);
+    }
+});
+
+const deleteTodosAsync = async (todos, userID) => {
+    return await fetch(`http://localhost:5000/users/${userID}/deleteTodos`,
+        {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 'todoItems': todos })
+        });
+}
+
+export const deleteTodos = createAsyncThunk("todos/deleteTodos", async ({ id }, { getState }) => {
+    let reduxTodos = getState().todos.todos;
+    let localstate = reduxTodos.map(todo => ({ ...todo }));
+    const userID = getState().user.userID;
+    try {
+        localstate = localstate.filter(item => item.id !== id);
+        await deleteTodosAsync(localstate, userID);
+        return localstate;
+    } catch (e) {
+        console.error('error occured while deleting todo:', e);
+    }
+})
+
+export const todoSlice = createSlice({
+    name: 'todo',
+    initialState,
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchTodos.pending, state => {
+                state.loading = true;
+                state.error = false;
+            })
+            .addCase(fetchTodos.fulfilled, (state, action) => {
+                state.loading = false;
+                state.todos = action.payload;
+            })
+            .addCase(fetchTodos.rejected, state => {
+                state.loading = false;
+                state.error = true;
+            })
+            .addCase(addTodos.pending, state => {
+                state.loading = true;
+                state.error = false;
+            })
+            .addCase(addTodos.fulfilled, (state, action) => {
+                state.loading = false;
+                state.todos.push(action.payload);
+            })
+            .addCase(addTodos.rejected, (state, action) => {
+                state.loading = false;
+                state.error = true;
+            })
+            .addCase(updateTodos.pending, state => {
+                state.loading = true;
+                state.error = false;
+            })
+            .addCase(updateTodos.fulfilled, (state, action) => {
+                state.loading = false;
+                state.todos = action.payload;
+            })
+            .addCase(updateTodos.rejected, (state, action) => {
+                state.loading = false;
+                state.error = true;
+            })
+            .addCase(deleteTodos.pending, state => {
+                state.loading = true;
+                state.error = false;
+            })
+            .addCase(deleteTodos.fulfilled, (state, action) => {
+                state.loading = false;
+                state.todos = action.payload;
+            })
+            .addCase(deleteTodos.rejected, (state, action) => {
+                state.loading = false;
+                state.error = true;
+            });
+    }
+});
+
+// export const { updateTodo } = todoSlice.actions; // exporting the actual actions which we can perfrom
 export default todoSlice.reducer; //needs to be wired up with the store

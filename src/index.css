@@ -17,6 +17,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; */
+  margin:0px;
   height: 100%;
   background: #1a1a1a;
 }
@@ -26,7 +27,15 @@ body {
   font-family: 'Montserrat-Thin';
   font-size: 2rem;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px;
+  background: orange;
+  background-blend-mode: multiply;
+  position: fixed;
+  z-index: 999;
+  height: 2em;
+  background-color: #424242;
 }
 
 .submit-form-add-todo {
@@ -64,7 +73,7 @@ body {
   outline: 0px solid gray !important;
 }
 
-.signupIP.signupIP-pwd{
+.signupIP.signupIP-pwd {
   -webkit-text-security: disc;
 }
 
@@ -92,7 +101,7 @@ body {
   font-family: Montserrat-Bold;
 }
 
-.todo-text{
+.todo-text {
   font-family: 'Montserrat';
 }
 
@@ -117,7 +126,7 @@ code {
   margin: auto;
 }
 
-.todo-edit-container{
+.todo-edit-container {
   display: flex;
   align-items: center;
 }
