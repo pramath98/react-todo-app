@@ -1,6 +1,6 @@
 .letsStart {
     color: white;
-    font-family: Montserrat-Bold;
+    font-family: Poppins-ExtraThin;
     font-size: 3rem;
     background: #ff5c00;
     width: max-content;
@@ -12,7 +12,7 @@
 
 .welcome {
     color: white;
-    font-family: Montserrat-Thin;
+    font-family: Poppins-ExtraBold;
     font-size: 7rem;
 }
 
@@ -29,7 +29,7 @@
     flex-direction: column;
     align-items: center;
     padding: 2rem;
-    background: #424242;
+    background: #151515;
     border-radius: 2rem;
     margin: 40px;
 }

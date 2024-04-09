@@ -1,9 +1,32 @@
-.landing-heading header{
+.main-landing-container{
+    height: 100vh;
     display: flex;
-    color: white;
-    font-family: 'Montserrat-Bold';
-    justify-content: center;
-    height: 50vh;
     align-items: center;
-    font-size: 4.5em;
+}
+.hero-text-container{
+    display: grid;
+    padding-left: 1em;
+}
+
+.main-landing-container::before{
+    content: '';
+    width: 25em;
+    height: 25em;
+    background-image: radial-gradient(closest-side, #FF0035, transparent);
+    margin-left: -13em;
+    opacity: 0.5;
+    margin-bottom: 11em;
+    position: absolute;
+    z-index: -1;
+}
+
+.hero-text{
+    font-family: Poppins-ExtraBold;
+    width: min-content;
+    line-height: 1em;
+    font-size: 6em;
+}
+.hero-subtext{
+    font-family: Poppins-ExtraLight;
+    font-size: 2.2em;
 }

@@ -79,9 +79,7 @@ function SignUp() {
                     <span>Password <span className={styles.mandatoryFieldIcon}>*</span></span>
                     <input className={'signupIP signupIP-pwd'} type="password" value={pwd} onChange={(e) => setPwd(e.target.value)}></input>
                 </div>
-                <Button type="submit" severity="success">
-                    Submit
-                </Button>
+                <Button type="submit" text raised style={{color:'orange'}} label="Submit"/>
             </form>
         </>
     )
