@@ -42,7 +42,8 @@ export const addTodos = createAsyncThunk('todos/addTodos', async (text, { getSta
     }
     const userID = getState().user.userID;
     try {
-        await saveTodos(todo, userID);
+        let resp=await saveTodos(todo, userID);
+        if(resp.status===404) throw 'error while updating';
         return todo;
     } catch (e) {
         console.log('error while adding todo in the server', e);
@@ -60,7 +61,7 @@ const updateTodosAsync = async (todos, userID) => {
         });
 }
 
-export const updateTodos = createAsyncThunk("todos/updateTodos", async ({ id, text }, { getState }) => {
+export const updateTodos = createAsyncThunk("todos/updateTodos", async ({ id, text, completed }, { getState }) => {
 
     let reduxTodos = getState().todos.todos;
     let localState = reduxTodos.map(todo => ({ ...todo }));
@@ -68,8 +69,10 @@ export const updateTodos = createAsyncThunk("todos/updateTodos", async ({ id, te
     // localState[idx].text = text;
     try {
         localState.forEach((todo) => {
-            if (todo.id === id)
+            if (todo.id === id) {
                 todo.text = text;
+                todo.completed = completed;
+            }
         });
         await updateTodosAsync(localState, userID);
         return localState;
