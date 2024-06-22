@@ -181,6 +181,8 @@ recordRoutes.route("/users/:id/deleteTodos").post(async (req, response) => {
     },
   };
   try {
+    let userFound = await db_connect.collection("users").findOne(myquery);
+    if (!userFound) return response.status(404).json({ message: "Error! User not found." });
     const record = await db_connect.collection("users").updateOne(myquery, newvalues);
     if(!record) return response.status(500).json({ message: "Error! todos cannot be deleted at this time" });
     response.status(200).json({ message: 'todo item deleted successfully!' });
