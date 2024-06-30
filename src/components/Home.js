@@ -43,7 +43,7 @@ function Home() {
                 console.log('login failed');
                 navigate('/login');
             });
-    }, []);
+    }, [dispatch,navigate]);
 
     return (
         userInfo.isLoggedIn &&

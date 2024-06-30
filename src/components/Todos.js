@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux/es/hooks/useSelector';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchTodos, updateTodos, deleteTodos } from "../features/todo/todoSlice";
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
@@ -14,7 +13,6 @@ function Todos() {
     const [editDialog, setEditDialog] = useState(false);
     const [editId, setEditId] = useState('');
     const [editText, setEditText] = useState('');
-    const [isChecked, setIsChecked] = useState(false);
 
     const editHandler = (e, id, text) => {
         e.preventDefault();
@@ -24,7 +22,7 @@ function Todos() {
     }
 
     const updateHandler = () => {
-        dispatch(updateTodos({ id: editId, text: editText,completed:false }));
+        dispatch(updateTodos({ id: editId, text: editText, completed: false }));
         // dispatch(updateTodo({ id: editId, text: editText }));
         setEditId('');
         setEditText('');
@@ -39,7 +37,6 @@ function Todos() {
     const handleCheckboxChanged = (e) => {
         console.log(e);
         dispatch(updateTodos({ id: e.target.id, text: e.target.value, completed: true }));
-        setIsChecked(prevState => !prevState);
     }
 
     useEffect(() => {
@@ -68,7 +65,7 @@ function Todos() {
                     {todos.map(todo => (
                         <Card key={todo.id} //style={{ width: '33%', margin: '10px' }}
                         >
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center',height:'15em' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: '15em' }}>
                                 <div className='checkbox-text-container'>
                                     {/* <Button icon='pi pi-check' rounded text severity='success' />
                                     <span className='todo-text'>{todo.text}</span> */}
