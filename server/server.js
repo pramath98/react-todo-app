@@ -4,12 +4,13 @@ const cors = require("cors");
 require("dotenv").config({ path: "./config.env" });
 const port = process.env.PORT || 5000;
 const ALLOWED_ORIGIN=process.env.ALLOWED_ORIGIN;
+const recordRouter = require("./routes/record");
 app.use(cors({
   origin: ALLOWED_ORIGIN,
   credentials: true
 }));
 app.use(express.json());
-app.use(require("./routes/record"));
+app.use('/api/records',recordRouter);
 // get driver connection
 const dbo = require("./db/conn");
 app.listen(port, () => {
