@@ -1,4 +1,5 @@
 import './App.css';
+import './index.css';
 import "primereact/resources/themes/arya-orange/theme.css";
 // import "primereact/resources/themes/lara-dark-indigo/theme.css";
 import 'primeicons/primeicons.css';

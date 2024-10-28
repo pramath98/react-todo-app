@@ -15,6 +15,7 @@ export default function LandingPage() {
                             <span className='hero-todo-vector-container-header-line' />
                         </div>
                         <div className='hero-todo-vector-container-tasks'>
+                            <span>Beat OpenAI to market</span>
                             <span>Learn Mathematics</span>
                             <span>Go to Gym</span>
                             <span>Bring snacks for the party</span>

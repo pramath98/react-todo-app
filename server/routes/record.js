@@ -16,8 +16,10 @@ const dbo = require("../db/conn");
 // This help convert the id from string to ObjectId for the _id.
 const ObjectId = require("mongodb").ObjectId;
 
+const cookieDomain = process.env.NODE_ENV === 'production' ? process.env.ALLOWED_ORIGIN : 'localhost';
+
 // This section will help you get a list of all the records.
-recordRoutes.route("/users").get(async function (req, res) {
+recordRoutes.route("/api/users").get(async function (req, res) {
   //  let db_connect = dbo.getDb("sample_airbnb");
   let db_connect = dbo.getDb();
   try {
@@ -32,7 +34,7 @@ recordRoutes.route("/users").get(async function (req, res) {
   }
 });
 
-recordRoutes.route('/profile').get(validateToken, async (req, res) => {
+recordRoutes.route('/api/profile').get(validateToken, async (req, res) => {
   if (req.authenticated)
     res.status(200).json(req.user);
   else
@@ -40,7 +42,7 @@ recordRoutes.route('/profile').get(validateToken, async (req, res) => {
 });
 
 // This section will help you get a single record by id
-recordRoutes.route("/login").post(async (req, res) => {
+recordRoutes.route("/api/login").post(async (req, res) => {
   try {
     let db_connect = await dbo.getDb();
 
@@ -54,10 +56,10 @@ recordRoutes.route("/login").post(async (req, res) => {
     let results = await bcrypt.compare(decryptedObject.password, records.password)
     if (results) {
       const accessToken = createTokens(records);
-      const milisecondsInADay=24*60*60*1000;
-      let age = milisecondsInADay*15; //we have to set age for 15 days thats why
+      const milisecondsInADay = 24 * 60 * 60 * 1000;
+      let age = milisecondsInADay * 15; //we have to set age for 15 days thats why
       res.cookie('access-token', accessToken, {
-        domain: 'localhost',
+        domain: `${cookieDomain}`,
         path: '/',
         maxAge: age,
         httpOnly: true
@@ -73,26 +75,26 @@ recordRoutes.route("/login").post(async (req, res) => {
 
 });
 
-recordRoutes.route("/logout").post(async(req,res)=>{
+recordRoutes.route("/api/logout").post(async (req, res) => {
   try {
     // Clear the access token cookie
     res.clearCookie('access-token', {
-      domain: 'localhost',
+      domain: `${cookieDomain}`,
       path: '/',
-      httpOnly:true
+      httpOnly: true
     });
     console.log("cookie cleared successfully!");
     // Send a response indicating successful logout
     res.status(200).json({ message: 'Logout successful' });
   } catch (error) {
     // Handle any errors that occur during logout
-    console.error('error while deleting cookie: ',error);
+    console.error('error while deleting cookie: ', error);
     res.status(500).json({ error: error.message });
   }
 });
 
 // This section will help you create a new record.
-recordRoutes.route("/users/add").post(async (req, response) => {
+recordRoutes.route("/api/users/add").post(async (req, response) => {
   try {
     // const salt = await bcrypt.genSalt();
     const encryptedData = req.body.encryptedObject;
@@ -120,7 +122,7 @@ recordRoutes.route("/users/add").post(async (req, response) => {
 
 });
 
-recordRoutes.route("/users/:id/addTodos").post(async (req, response) => {
+recordRoutes.route("/api/users/:id/addTodos").post(async (req, response) => {
   let db_connect = dbo.getDb();
   const userId = req.params.id;
   const todoItem = req.body.todoItem;
@@ -139,7 +141,7 @@ recordRoutes.route("/users/:id/addTodos").post(async (req, response) => {
   }
 });
 
-recordRoutes.route("/users/:id/fetchTodos").get(async (req, response) => {
+recordRoutes.route("/api/users/:id/fetchTodos").get(async (req, response) => {
   let db_connect = dbo.getDb();
   const userId = req.params.id;
   try {
@@ -154,7 +156,7 @@ recordRoutes.route("/users/:id/fetchTodos").get(async (req, response) => {
   }
 });
 
-recordRoutes.route("/users/:id/updateTodos").post(async (req, response) => {
+recordRoutes.route("/api/users/:id/updateTodos").post(async (req, response) => {
   let db_connect = dbo.getDb();
   let myquery = { _id: new ObjectId(req.params.id) };
   let newvalues = {
@@ -164,7 +166,7 @@ recordRoutes.route("/users/:id/updateTodos").post(async (req, response) => {
   };
   try {
     const record = await db_connect.collection("users").updateOne(myquery, newvalues);
-    if(!record) return response.status(500).json({ message: "Error! todos cannot be updated at this time" });
+    if (!record) return response.status(500).json({ message: "Error! todos cannot be updated at this time" });
     response.status(200).json({ message: 'todo item updated successfully!' });
   } catch (e) {
     response.status(501).json({ msg: 'error while updating the record, ', e });
@@ -172,7 +174,7 @@ recordRoutes.route("/users/:id/updateTodos").post(async (req, response) => {
 
 });
 
-recordRoutes.route("/users/:id/deleteTodos").post(async (req, response) => {
+recordRoutes.route("/api/users/:id/deleteTodos").post(async (req, response) => {
   let db_connect = dbo.getDb();
   let myquery = { _id: new ObjectId(req.params.id) };
   let newvalues = {
@@ -184,7 +186,7 @@ recordRoutes.route("/users/:id/deleteTodos").post(async (req, response) => {
     let userFound = await db_connect.collection("users").findOne(myquery);
     if (!userFound) return response.status(404).json({ message: "Error! User not found." });
     const record = await db_connect.collection("users").updateOne(myquery, newvalues);
-    if(!record) return response.status(500).json({ message: "Error! todos cannot be deleted at this time" });
+    if (!record) return response.status(500).json({ message: "Error! todos cannot be deleted at this time" });
     response.status(200).json({ message: 'todo item deleted successfully!' });
   } catch (e) {
     response.status(501).json({ msg: 'error while deleting the record, ', e });
@@ -193,7 +195,7 @@ recordRoutes.route("/users/:id/deleteTodos").post(async (req, response) => {
 });
 
 // This section will help you update a record by id.
-recordRoutes.route("/update/:id").post(function (req, response) {
+recordRoutes.route("/api/update/:id").post(function (req, response) {
   let db_connect = dbo.getDb();
   let myquery = { _id: ObjectId(req.params.id) };
   let newvalues = {
@@ -214,7 +216,7 @@ recordRoutes.route("/update/:id").post(function (req, response) {
 });
 
 // This section will help you delete a record
-recordRoutes.route("/:id").delete((req, response) => {
+recordRoutes.route("/api/:id").delete((req, response) => {
   let db_connect = dbo.getDb();
   let myquery = { _id: ObjectId(req.params.id) };
   db_connect.collection("records").deleteOne(myquery, function (err, obj) {

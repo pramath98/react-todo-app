@@ -3,6 +3,7 @@ import 'primeicons/primeicons.css';
 import styles from './Welcome.module.css';
 import { Button } from "primereact/button";
 import CryptoJS from 'crypto-js';
+const baseURI = process.env.REACT_APP_API_BASE_URL;
 
 function SignUp() {
     const [fname, setFname] = useState('');
@@ -41,7 +42,7 @@ function SignUp() {
                 JSON.stringify(data),
                 process.env.REACT_APP_SECRET_KEY
             ).toString();
-            const response = await fetch('http://localhost:5000/users/add', {
+            const response = await fetch(`${baseURI}/api/users/add`, {
                 method: "POST", // *GET, POST, PUT, DELETE, etc.
                 mode: "cors", // no-cors, *cors, same-origin
                 cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached

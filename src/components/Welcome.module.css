@@ -1,6 +1,7 @@
 .letsStart {
     color: white;
-    font-family: Poppins-ExtraThin;
+    font-family: "Poppins", sans-serif;
+    font-weight: 800;
     font-size: 3rem;
     background: #ff5c00;
     width: max-content;
@@ -12,7 +13,8 @@
 
 .welcome {
     color: white;
-    font-family: Poppins-ExtraBold;
+    font-family: "Poppins", sans-serif;
+    font-weight: 800;
     font-size: 7rem;
 }
 
@@ -49,4 +51,3 @@
 .mandatoryFieldIcon {
     color: red;
 }
-

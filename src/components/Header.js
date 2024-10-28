@@ -2,12 +2,13 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from 'primereact/button';
 import { useSelector } from "react-redux";
 import './Header.css';
+const baseURI = process.env.REACT_APP_API_BASE_URL;
 
 function Header() {
     const navigate = useNavigate();
     const userInfo = useSelector(reducer => reducer.user);
     const logoutHandler = async () => {
-        const resp = await fetch("http://localhost:5000/logout",
+        const resp = await fetch(`${baseURI}/api/logout`,
             {
                 method: "POST", credentials: "include",
                 headers: {

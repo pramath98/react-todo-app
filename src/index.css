@@ -1,26 +1,5 @@
-@font-face {
-  font-family: 'Montserrat-Thin';
-  src: local('Montserrat-Thin'),
-    url('./fonts/Montserrat/Montserrat-Thin.ttf') format('ttf');
-}
-
-@font-face {
-  font-family: 'Montserrat-Bold';
-  src: local('Montserrat-Bold'),
-    url('./fonts/Montserrat/Montserrat-Bold.ttf') format('ttf');
-}
-
-@font-face {
-  font-family: 'Poppins-ExtraBold';
-  src: local('Poppins-ExtraBold'),
-    url('./fonts/Poppins/Poppins-ExtraBold.ttf') format('ttf');
-}
-
-@font-face {
-  font-family: 'Poppins-ExtraLight';
-  src: local('Poppins-ExtraLight'),
-    url('./fonts/Poppins/Poppins-ExtraLight.ttf') format('ttf');
-}
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
 body {
   /* margin: 0;
@@ -36,7 +15,7 @@ body {
 
 .app-header {
   color: white;
-  font-family: 'Montserrat-Thin';
+  font-family: 'Montserrat';
   font-size: 2rem;
   display: flex;
   justify-content: space-between;

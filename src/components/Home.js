@@ -7,12 +7,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { login, loginFailure } from '../features/user/userSlice';
 import { useNavigate } from 'react-router-dom';
 
+const baseURI = process.env.REACT_APP_API_BASE_URL;
+
 function Home() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const userInfo = useSelector(reducer => reducer.user);
     useEffect(() => {
-        fetch('http://localhost:5000/profile',
+        fetch(`${baseURI}/api/profile`,
             {
                 method: 'GET',
                 credentials: 'include'

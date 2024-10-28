@@ -4,6 +4,7 @@ import styles from './Welcome.module.css';
 import { Button } from "primereact/button";
 import CryptoJS from 'crypto-js';
 import { useNavigate } from "react-router-dom";
+const baseURI = process.env.REACT_APP_API_BASE_URL;
 
 function Login() {
     // const SECRET_KEY = process.env.REACT_APP_SECRET_KEY; 
@@ -27,7 +28,7 @@ const navigate = useNavigate();
             JSON.stringify(login),
             process.env.REACT_APP_SECRET_KEY
         ).toString();
-        fetch('http://localhost:5000/login', {
+        fetch(`${baseURI}/api/login`, {
             method: "POST", // *GET, POST, PUT, DELETE, etc.
             mode: "cors", // no-cors, *cors, same-origin
             cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached

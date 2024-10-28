@@ -4,10 +4,12 @@ const initialState = {
     loading: true,
     error: false,
 };
+const baseURI = process.env.REACT_APP_API_BASE_URL;
+
 
 export const fetchTodos = createAsyncThunk('todos/fetchTodos', async (_, { getState }) => {
     const userID = getState().user.userID;
-    const response = await fetch(`http://localhost:5000/users/${userID}/fetchTodos`,
+    const response = await fetch(`${baseURI}/api/users/${userID}/fetchTodos`,
         {
             method: 'GET',
             credentials: 'include'
@@ -25,7 +27,7 @@ export const fetchTodos = createAsyncThunk('todos/fetchTodos', async (_, { getSt
 });
 
 const saveTodos = async (todo, userID) => {
-    return await fetch(`http://localhost:5000/users/${userID}/addTodos`,
+    return await fetch(`${baseURI}/api/users/${userID}/addTodos`,
         {
             method: 'POST',
             headers: {
@@ -51,7 +53,7 @@ export const addTodos = createAsyncThunk('todos/addTodos', async (text, { getSta
 });
 
 const updateTodosAsync = async (todos, userID) => {
-    return await fetch(`http://localhost:5000/users/${userID}/updateTodos`,
+    return await fetch(`${baseURI}/api/users/${userID}/updateTodos`,
         {
             method: 'POST',
             headers: {
@@ -82,7 +84,7 @@ export const updateTodos = createAsyncThunk("todos/updateTodos", async ({ id, te
 });
 
 const deleteTodosAsync = async (todos, userID) => {
-    return await fetch(`http://localhost:5000/users/${userID}/deleteTodos`,
+    return await fetch(`${baseURI}/api/users/${userID}/deleteTodos`,
         {
             method: 'POST',
             headers: {
