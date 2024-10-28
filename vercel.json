@@ -1,4 +1,15 @@
 {
+  "projects": [
+    {
+      "name": "server",
+      "rootDirectory": "server",
+      "functions": {
+        "api/*.js": {
+          "runtime": "nodejs14.x"
+        }
+      }
+    }
+  ],
     "routes": [
       {
         "src": "/api/(.*)",
