@@ -1,11 +1,11 @@
 {
   "version": 2,
   "builds": [
-    { "src": "/package.json", "use": "@vercel/next" },
-    { "src": "server/index.js", "use": "@vercel/node" }
+    { "src": "/package.json", "use": "@vercel/create-react-app" },
+    { "src": "server/server.js", "use": "@vercel/node" }
   ],
   "routes": [
-    { "src": "/api/(.*)", "dest": "server/index.js" },
+    { "src": "/api/(.*)", "dest": "server/server.js" },
     { "src": "/(.*)", "dest": "out" }
   ]
 }
