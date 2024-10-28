@@ -22,3 +22,4 @@ if(process.env.NODE_ENV==='development'){
     console.log(`Server is running on port: ${port}`);
   });
 }
+export default app;
