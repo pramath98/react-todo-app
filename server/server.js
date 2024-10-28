@@ -22,4 +22,4 @@ const dbo = require("./db/conn");
 dbo.connectToServer(function (err) {
   if (err) console.error(err);
  });
-export default app;
+ module.exports = app;
