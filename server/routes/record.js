@@ -23,7 +23,7 @@ recordRoutes.route("/api/users").get(async function (req, res) {
   //  let db_connect = dbo.getDb("sample_airbnb");
   let db_connect = await dbo.getDb();
   try {
-    // console.log(db_connect);
+    console.log('db connect object',db_connect);
     var records = await db_connect
       .collection("users")
       .find({})
