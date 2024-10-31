@@ -14,7 +14,6 @@ app.use('/',recordRouter);
 // get driver connection
 if(process.env.NODE_ENV==='development'){
   app.listen(port, () => {
-    // perform a database connection when server starts
     console.log(`Server is running on port: ${port}`);
   });
 }

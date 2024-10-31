@@ -21,7 +21,7 @@ const cookieDomain = process.env.NODE_ENV === 'production' ? process.env.ALLOWED
 // This section will help you get a list of all the records.
 recordRoutes.route("/api/users").get(async function (req, res) {
   //  let db_connect = dbo.getDb("sample_airbnb");
-  let db_connect = dbo.getDb();
+  let db_connect = await dbo.getDb();
   try {
     // console.log(db_connect);
     var records = await db_connect
