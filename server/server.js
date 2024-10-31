@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 require("dotenv").config({ path: "./config.env" });
+const path = require('path');
 const port = process.env.PORT || 5000;
 const ALLOWED_ORIGIN=process.env.ALLOWED_ORIGIN;
 const recordRouter = require("./routes/record");
@@ -11,6 +12,7 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use('/',recordRouter);
+app.use(express.static(path.join('../frontend', 'build')));
 // get driver connection
 // if(process.env.NODE_ENV==='development'){
   app.listen(port, () => {
