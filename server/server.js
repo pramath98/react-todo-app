@@ -25,8 +25,18 @@ app.use("/", recordRouter);
 // Check if we're in the serverless environment (Vercel)
 if (process.env.NODE_ENV === "production") {
   // If in production, use serverless
-  const handler = serverless(app);
-  module.exports = handler; // Export the serverless handler for Vercel
+
+  dbo.connectToServer()
+    .then(() => {
+      const handler = serverless(app);
+      module.exports = handler; // Export the serverless handler for Vercel
+    })
+    .catch((error) => {
+      console.error("Error connecting to MongoDB:", error);
+      process.exit(1);
+    });
+
+
 } else {
   // If in development, run Express server normally
   dbo.connectToServer()
