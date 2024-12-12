@@ -27,7 +27,6 @@ if (process.env.NODE_ENV === "production") {
   // If in production, use serverless
   dbo.connectToServer()
     .then(() => {
-      const handler = serverless(app);
     })
     .catch((error) => {
       console.error("Error connecting to MongoDB:", error);
@@ -48,4 +47,4 @@ if (process.env.NODE_ENV === "production") {
       process.exit(1);
     });
 }
-module.exports = handler; // Export the serverless handler for Vercel
+module.exports = serverless(app); // Export the serverless handler for Vercel
