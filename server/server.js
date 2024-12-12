@@ -27,6 +27,7 @@ if (process.env.NODE_ENV === "production") {
   // If in production, use serverless
   dbo.connectToServer()
     .then(() => {
+      console.error("connected in PROD!!!");
     })
     .catch((error) => {
       console.error("Error connecting to MongoDB:", error);
