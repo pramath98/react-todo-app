@@ -20,7 +20,7 @@ const recordRouter = require("./routes/record");
 app.use("/", recordRouter);
 
 // Serve Frontend for Production
-app.use(express.static(path.join(__dirname, "../frontend/build")));
+// app.use(express.static(path.join(__dirname, "../frontend/build")));
 
 // Check if we're in the serverless environment (Vercel)
 if (process.env.NODE_ENV === "production") {
