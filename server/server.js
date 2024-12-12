@@ -22,12 +22,15 @@ app.use("/", recordRouter);
 // Serve Frontend for Production
 app.use(express.static(path.join(__dirname, "../frontend/build")));
 
-// Try to connect to MongoDB asynchronously
-(async () => {
+// Connect to MongoDB before starting the server
+const startServer = async () => {
   try {
     const isConnected = await dbo.connectToServer();
     if (isConnected) {
       console.log("Successfully connected to MongoDB.");
+      // Start the server once DB is connected
+      const handler = serverless(app);
+      module.exports = handler;
     } else {
       console.error("Database connection failed.");
       process.exit(1); // Stop the app if DB connection fails
@@ -36,7 +39,7 @@ app.use(express.static(path.join(__dirname, "../frontend/build")));
     console.error("Error connecting to MongoDB:", err);
     process.exit(1); // Exit if there’s an error connecting to DB
   }
-})();
+};
 
-// Export the app as a serverless function
-module.exports = serverless(app);
+startServer(); // Start the DB connection and then the server
+
