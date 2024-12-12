@@ -2,10 +2,10 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config({ path: "./config.env" });
 const path = require("path");
-const dbo = require("./db/conn"); // Import the DB connection module
+const dbo = require("./db/conn"); // Import DB connection
+const serverless = require("serverless-http"); // Import serverless-http
 
 const app = express();
-const port = process.env.PORT || 5000;
 const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN;
 
 // Middleware
@@ -22,24 +22,21 @@ app.use("/", recordRouter);
 // Serve Frontend for Production
 app.use(express.static(path.join(__dirname, "../frontend/build")));
 
-// Initialize the application
+// Try to connect to MongoDB asynchronously
 (async () => {
   try {
-    const isConnected = await dbo.connectToServer(); // Await the database connection
-    if (!isConnected) {
+    const isConnected = await dbo.connectToServer();
+    if (isConnected) {
+      console.log("Successfully connected to MongoDB.");
+    } else {
       console.error("Database connection failed.");
-      process.exit(1); // Exit if the database connection fails
+      process.exit(1); // Stop the app if DB connection fails
     }
-    console.log("Database connection established.");
-
-    // Start the server only after DB connection is ready
-    app.listen(port, () => {
-      console.log(`Server is running on port: ${port}`);
-    });
   } catch (err) {
-    console.error("Error initializing application:", err);
-    process.exit(1); // Exit if there's an unhandled error
+    console.error("Error connecting to MongoDB:", err);
+    process.exit(1); // Exit if there’s an error connecting to DB
   }
 })();
 
-module.exports = app;
+// Export the app as a serverless function
+module.exports.handler = serverless(app);
