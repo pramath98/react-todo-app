@@ -39,4 +39,4 @@ app.use(express.static(path.join(__dirname, "../frontend/build")));
 })();
 
 // Export the app as a serverless function
-module.exports.handler = serverless(app);
+module.exports = serverless(app);
