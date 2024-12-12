@@ -26,7 +26,7 @@ app.use(express.static(path.join(__dirname, "../frontend/build")));
 if (process.env.NODE_ENV === "production") {
   // If in production, use serverless
   const handler = serverless(app);
-  module.exports.handler = handler; // Export the serverless handler for Vercel
+  module.exports = handler; // Export the serverless handler for Vercel
 } else {
   // If in development, run Express server normally
   dbo.connectToServer()
