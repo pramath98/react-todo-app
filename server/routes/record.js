@@ -18,6 +18,10 @@ const ObjectId = require("mongodb").ObjectId;
 
 const cookieDomain = process.env.NODE_ENV === 'production' ? process.env.ALLOWED_ORIGIN : 'localhost';
 
+recordRoutes.route("/").get(async function (req, res) {
+res.status(200).json({"status":"OK"});
+})
+
 // This section will help you get a list of all the records.
 recordRoutes.route("/api/users").get(async function (req, res) {
   //  let db_connect = dbo.getDb("sample_airbnb");
