@@ -27,7 +27,6 @@ recordRoutes.route("/api/users").get(async function (req, res) {
   //  let db_connect = dbo.getDb("sample_airbnb");
   let db_connect = await dbo.getDb();
   try {
-    console.log('db connect object',db_connect);
     var records = await db_connect
       .collection("users")
       .find({})
@@ -49,10 +48,10 @@ recordRoutes.route('/api/profile').get(validateToken, async (req, res) => {
 recordRoutes.route("/api/login").post(async (req, res) => {
   try {
     let db_connect = await dbo.getDb();
-
     const encryptedData = req.body.encryptedObject;
     const decryptedObject = JSON.parse(CryptoJS.AES.decrypt(encryptedData, process.env.SECRET_KEY).toString(CryptoJS.enc.Utf8));
     // const decryptedObject = req.body; //when testing with Postman
+    
     let myquery = { userName: decryptedObject.userName };
     let records = await db_connect
       .collection("users")
@@ -62,6 +61,7 @@ recordRoutes.route("/api/login").post(async (req, res) => {
       const accessToken = createTokens(records);
       const milisecondsInADay = 24 * 60 * 60 * 1000;
       let age = milisecondsInADay * 15; //we have to set age for 15 days thats why
+      console.log(cookieDomain);
       res.cookie('access-token', accessToken, {
         domain: `${cookieDomain}`,
         path: '/',

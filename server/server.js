@@ -3,7 +3,6 @@ const cors = require("cors");
 require("dotenv").config({ path: "./config.env" });
 const path = require("path");
 const dbo = require("./db/conn"); // Import DB connection
-const serverless = require("serverless-http");
 
 const app = express();
 const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN;
@@ -13,28 +12,17 @@ app.use(cors({
   origin: ALLOWED_ORIGIN,
   credentials: true,
 }));
+
+app.use(express.static(path.join(__dirname, '../frontend/build')));
 app.use(express.json());
 
 // API Routes
 const recordRouter = require("./routes/record");
 app.use("/", recordRouter);
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
+});
 
-// Serve Frontend for Production
-// app.use(express.static(path.join(__dirname, "../frontend/build")));
-
-// Check if we're in the serverless environment (Vercel)
-if (process.env.NODE_ENV === "production") {
-  // If in production, use serverless
-  dbo.connectToServer()
-    .then(() => {
-      console.error("connected in PROD!!!");
-    })
-    .catch((error) => {
-      console.error("Error connecting to MongoDB:", error);
-      process.exit(1);
-    });
-} else {
-  // If in development, run Express server normally
   dbo.connectToServer()
     .then(() => {
       console.log("Successfully connected to MongoDB.");
@@ -47,5 +35,4 @@ if (process.env.NODE_ENV === "production") {
       console.error("Error connecting to MongoDB:", error);
       process.exit(1);
     });
-}
-module.exports = serverless(app); // Export the serverless handler for Vercel
+
