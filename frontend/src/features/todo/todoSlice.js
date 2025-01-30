@@ -17,6 +17,9 @@ export const fetchTodos = createAsyncThunk('todos/fetchTodos', async (_, { getSt
     if (response.status === 200) {
         let todos = await response.json();
         let finalTodos = [];
+        if(!todos.todos || !todos.todos.length){
+        return finalTodos;
+        }
         todos.todos.forEach(todo => {
             finalTodos.push(todo)
         });

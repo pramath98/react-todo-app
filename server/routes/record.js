@@ -152,7 +152,7 @@ recordRoutes.route("/api/users/:id/fetchTodos").get(async (req, response) => {
     let myquery = { _id: new ObjectId(userId) };
     let record = await db_connect.collection("users").findOne(myquery);
     if (!record) return response.status(404).json({ message: "Error! User not found." });
-    if (!record.todoItems) return response.status(401).json({ message: 'No todos found' });
+    if (!record.todoItems) return response.status(200).json({ message: 'No todos found' });
     response.status(200).json({ todos: record.todoItems });
 
   } catch (e) {
