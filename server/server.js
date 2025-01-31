@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-require("dotenv").config({ path: "./config.env" });
+require("dotenv").config({ path: "../.env" });
 const path = require("path");
 const dbo = require("./db/conn"); // Import DB connection
 
@@ -13,7 +13,7 @@ app.use(cors({
   credentials: true,
 }));
 
-app.use(express.static(path.join(__dirname, '../frontend/build')));
+// app.use(express.static(path.join(__dirname, '../frontend/build')));
 app.use(express.json());
 
 // API Routes

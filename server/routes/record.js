@@ -66,7 +66,9 @@ recordRoutes.route("/api/login").post(async (req, res) => {
         domain: `${cookieDomain}`,
         path: '/',
         maxAge: age,
-        httpOnly: true
+        httpOnly: true,
+        secure:true,
+        sameSite:'none'
       });
       res.status(200).json(records);
     }
