@@ -61,7 +61,7 @@ recordRoutes.route("/api/login").post(async (req, res) => {
       const accessToken = createTokens(records);
       const milisecondsInADay = 24 * 60 * 60 * 1000;
       let age = milisecondsInADay * 15; //we have to set age for 15 days thats why
-      console.log(cookieDomain);
+      console.log('setting access token: ', accessToken);
       res.cookie('access-token', accessToken, {
         domain: `${cookieDomain}`,
         path: '/',
