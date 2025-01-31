@@ -63,7 +63,8 @@ recordRoutes.route("/api/login").post(async (req, res) => {
       let age = milisecondsInADay * 15; //we have to set age for 15 days thats why
       console.log('setting access token: ', accessToken);
       res.cookie('access-token', accessToken, {
-        domain: `${cookieDomain}`,
+        // domain: `${cookieDomain}`,
+        domain:'.vercel.app',
         path: '/',
         maxAge: age,
         httpOnly: true,
