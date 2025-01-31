@@ -69,7 +69,7 @@ recordRoutes.route("/api/login").post(async (req, res) => {
         maxAge: age,
         httpOnly: true,
         secure:true,
-        sameSite:'none'
+        sameSite:'None'
       });
       res.status(200).json(records);
     }
