@@ -1,20 +1,38 @@
 const express = require("express");
-const app = express();
 const cors = require("cors");
-require("dotenv").config({ path: "./config.env" });
-const port = process.env.PORT || 5000;
+require("dotenv").config({ path: "../.env" });
+const path = require("path");
+const dbo = require("./db/conn"); // Import DB connection
+
+const app = express();
+const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN;
+
+// Middleware
 app.use(cors({
-  origin: 'http://localhost:3000',
-  credentials: true
+  origin: ALLOWED_ORIGIN,
+  credentials: true,
 }));
+
+// app.use(express.static(path.join(__dirname, '../frontend/build')));
 app.use(express.json());
-app.use(require("./routes/record"));
-// get driver connection
-const dbo = require("./db/conn");
-app.listen(port, () => {
-  // perform a database connection when server starts
-  dbo.connectToServer(function (err) {
-    if (err) console.error(err);
-   });
-  console.log(`Server is running on port: ${port}`);
+
+// API Routes
+const recordRouter = require("./routes/record");
+app.use("/", recordRouter);
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
 });
+
+  dbo.connectToServer()
+    .then(() => {
+      console.log("Successfully connected to MongoDB.");
+      const port = process.env.PORT || 5000;
+      app.listen(port, () => {
+        console.log(`Server is running on port: ${port}`);
+      });
+    })
+    .catch((error) => {
+      console.error("Error connecting to MongoDB:", error);
+      process.exit(1);
+    });
+

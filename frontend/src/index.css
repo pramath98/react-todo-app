@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+body {
+  /* margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; */
+  margin:0px;
+  height: 100%;
+  background: #1a1a1a;
+}
+
+.app-header {
+  color: white;
+  font-family: 'Montserrat';
+  font-size: 2rem;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px;
+  background: orange;
+  background-blend-mode: multiply;
+  position: fixed;
+  z-index: 999;
+  height: 2em;
+  background-color: #151515;
+}
+
+
+.signupIP {
+  background: #2f2f2f;
+  border: 0px solid gray;
+  border-radius: 10px;
+  height: 3rem;
+  width: 30rem;
+  margin: 20px;
+  margin-top: 10px;
+  color: white;
+  font-family: Montserrat;
+  padding-left: 10px;
+}
+
+
+.signupIP.signupIP-pwd {
+  -webkit-text-security: disc;
+}
+
+
+.signupIP:focus-visible {
+  outline: 0px solid gray !important;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
