@@ -23,7 +23,7 @@ res.status(200).json({"status":"OK"});
 })
 
 // This section will help you get a list of all the records.
-recordRoutes.route("/api/users").get(async function (req, res) {
+recordRoutes.route("/users").get(async function (req, res) {
   //  let db_connect = dbo.getDb("sample_airbnb");
   let db_connect = await dbo.getDb();
   try {
@@ -37,7 +37,7 @@ recordRoutes.route("/api/users").get(async function (req, res) {
   }
 });
 
-recordRoutes.route('/api/profile').get(validateToken, async (req, res) => {
+recordRoutes.route('/profile').get(validateToken, async (req, res) => {
   if (req.authenticated)
     res.status(200).json(req.user);
   else
@@ -45,7 +45,7 @@ recordRoutes.route('/api/profile').get(validateToken, async (req, res) => {
 });
 
 // This section will help you get a single record by id
-recordRoutes.route("/api/login").post(async (req, res) => {
+recordRoutes.route("/login").post(async (req, res) => {
   try {
     let db_connect = await dbo.getDb();
     const encryptedData = req.body.encryptedObject;
@@ -82,7 +82,7 @@ recordRoutes.route("/api/login").post(async (req, res) => {
 
 });
 
-recordRoutes.route("/api/logout").post(async (req, res) => {
+recordRoutes.route("/logout").post(async (req, res) => {
   try {
     // Clear the access token cookie
     res.clearCookie('access-token', {
@@ -101,7 +101,7 @@ recordRoutes.route("/api/logout").post(async (req, res) => {
 });
 
 // This section will help you create a new record.
-recordRoutes.route("/api/users/add").post(async (req, response) => {
+recordRoutes.route("/users/add").post(async (req, response) => {
   try {
     // const salt = await bcrypt.genSalt();
     const encryptedData = req.body.encryptedObject;
@@ -129,7 +129,7 @@ recordRoutes.route("/api/users/add").post(async (req, response) => {
 
 });
 
-recordRoutes.route("/api/users/:id/addTodos").post(async (req, response) => {
+recordRoutes.route("/users/:id/addTodos").post(async (req, response) => {
   let db_connect = dbo.getDb();
   const userId = req.params.id;
   const todoItem = req.body.todoItem;
@@ -148,7 +148,7 @@ recordRoutes.route("/api/users/:id/addTodos").post(async (req, response) => {
   }
 });
 
-recordRoutes.route("/api/users/:id/fetchTodos").get(async (req, response) => {
+recordRoutes.route("/users/:id/fetchTodos").get(async (req, response) => {
   let db_connect = dbo.getDb();
   const userId = req.params.id;
   try {
@@ -163,7 +163,7 @@ recordRoutes.route("/api/users/:id/fetchTodos").get(async (req, response) => {
   }
 });
 
-recordRoutes.route("/api/users/:id/updateTodos").post(async (req, response) => {
+recordRoutes.route("/users/:id/updateTodos").post(async (req, response) => {
   let db_connect = dbo.getDb();
   let myquery = { _id: new ObjectId(req.params.id) };
   let newvalues = {
@@ -181,7 +181,7 @@ recordRoutes.route("/api/users/:id/updateTodos").post(async (req, response) => {
 
 });
 
-recordRoutes.route("/api/users/:id/deleteTodos").post(async (req, response) => {
+recordRoutes.route("/users/:id/deleteTodos").post(async (req, response) => {
   let db_connect = dbo.getDb();
   let myquery = { _id: new ObjectId(req.params.id) };
   let newvalues = {
@@ -202,7 +202,7 @@ recordRoutes.route("/api/users/:id/deleteTodos").post(async (req, response) => {
 });
 
 // This section will help you update a record by id.
-recordRoutes.route("/api/update/:id").post(function (req, response) {
+recordRoutes.route("/update/:id").post(function (req, response) {
   let db_connect = dbo.getDb();
   let myquery = { _id: ObjectId(req.params.id) };
   let newvalues = {
@@ -223,7 +223,7 @@ recordRoutes.route("/api/update/:id").post(function (req, response) {
 });
 
 // This section will help you delete a record
-recordRoutes.route("/api/:id").delete((req, response) => {
+recordRoutes.route("/:id").delete((req, response) => {
   let db_connect = dbo.getDb();
   let myquery = { _id: ObjectId(req.params.id) };
   db_connect.collection("records").deleteOne(myquery, function (err, obj) {
